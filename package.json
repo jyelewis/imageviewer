@@ -1,0 +1,8 @@
+{ "dependencies" :
+  {
+  	 "chokidar" : "latest"
+  	,"express": "latest"
+  	,"hound": "latest"
+  	,"socket.io": "latest"
+  }
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<style>
+			html, body {margin:0; padding:0;}
+			body {
+				background-color:#000;
+			}
+			#mainImage {
+				position:absolute;
+				top:20px;
+				bottom:200px;
+				
+				width:calc(100% - 520px);
+
+				background-size:contain;
+				background-repeat:no-repeat;
+				background-position:left center;
+				margin-left:25px;
+			}
+			#oldImages {
+				position:absolute;
+				bottom:5px;
+				left:5px;
+				right:5px;
+				height:180px;
+				overflow:hidden;
+				direction: rtl;
+			}
+			#oldImages img {
+				height:100%;
+				margin-right:30px;
+			}
+			#clock {
+				position:absolute;
+				right:20px;
+				width:460px;
+				margin-top:200px;
+			}
+			.flip-clock-label {
+				color:#fff !important;
+				font-size:16px;
+			}
+		</style>
+
+		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+		<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+		<!-- Countdown -->
+		<link rel="stylesheet" href="/resources/flipclock.css" />
+		<script type="text/javascript" src="/resources/flipclock.js"></script>
+
+
+		<script>
+			setTimeout(function(){location.reload();}, 1000*60*5); //clear dom
+
+			var socket = io();
+			var lastURL;
+			socket.on('updateImage', function(imageURL){
+				if (lastURL)
+					$("#oldImages").prepend('<img src="/images/' + lastURL + '" />');
+
+				$("#mainImage").css('backgroundImage', "url('/images/"+imageURL+"')");
+				lastURL = imageURL;
+				
+			});
+			//clock
+			$(document).ready(function() {
+				var currentDate = new Date();
+
+				//year, month, day, hours, minutes, seconds, milliseconds
+				//var futureDate = new Date(2014, 11, 30, 11, 30, 0, 0);
+				var futureDate = new Date();
+				futureDate.setHours(19);
+				futureDate.setMinutes(00);
+
+				futureDate.setMilliseconds(0);
+
+				// Calculate the difference in seconds between the future and current date
+				var diff = futureDate.getTime() / 1000 - currentDate.getTime() / 1000;
+
+				// Instantiate a coutdown FlipClock
+				$('#clock').FlipClock(diff, {
+					 countdown: true
+				});
+			});
+		</script>
+
+		
+	</head>
+
+	<body>
+		<div id="mainImage" style=""></div>
+		<!--<div id="clock"></div>-->
+		<div id="oldImages">
+			
+		</div>
+	</body>
+
+</html>
